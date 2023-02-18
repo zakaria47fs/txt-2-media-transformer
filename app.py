@@ -35,6 +35,7 @@ from sentence_transformers import SentenceTransformer
 
 import httpx
 import json
+from fastapi import FastAPI
 
 from utils import get_tags_for_prompts, get_mubert_tags_embeddings, get_pat
 
@@ -598,5 +599,14 @@ with block:
     </div>
     ''')
     
+#block.queue().launch(server_port=8000)
 
-block.queue().launch(server_port=8000)
+
+app = FastAPI()
+@app.get("/")
+def read_main():
+    return {"message": "This is your main app"}
+    
+app = gr.mount_gradio_app(app, block, path="/gradio")
+
+
