@@ -142,7 +142,7 @@ def get_result(text_prompts, style_indx, musicAI_indx, duration):
     style = style_list_EN[style_indx]
     prompt = style + "," + text_prompts
         
-    sdresult = pipe(prompt, negative_prompt = "out of focus, scary, creepy, evil, disfigured, missing limbs, ugly, gross, missing fingers", num_inference_steps=50, guidance_scale=7, width=576, height=576)
+    sdresult = pipe(prompt, negative_prompt = "out of focus, scary, creepy, evil, disfigured, missing limbs, ugly, gross, missing fingers", num_inference_steps=50, guidance_scale=7, width=376, height=376)
     image_output = sdresult.images[0] if not sdresult.nsfw_content_detected[0] else Image.open("nsfw_placeholder.jpg")
     
     print("Generated image with prompt " + prompt)
@@ -168,10 +168,10 @@ def get_music(prompt, musicAI_indx, duration):
     wavfile_name = "audio.wav"
     if musicAI_indx == 0: 
         if duration == 5:
-            width_duration=512
+            width_duration=312
         else :
-            width_duration = 512 + ((int(duration)-5) * 128)
-        spec = pipe2(prompt, height=512, width=width_duration).images[0]
+            width_duration = 312 + ((int(duration)-5) * 128)
+        spec = pipe2(prompt, height=312, width=width_duration).images[0]
         print(spec)
         wav = wav_bytes_from_spectrogram_image(spec)
         with open(wavfile_name, "wb") as f:
@@ -606,7 +606,7 @@ app = FastAPI()
 @app.get("/")
 def read_main():
     return {"message": "This is your main app"}
-    
+
 app = gr.mount_gradio_app(app, block, path="/gradio")
 
 
